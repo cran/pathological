@@ -1,16 +1,15 @@
 create_expected_decomposed_path <- function(dirname, filename, extension, row.names)
 {
-  out <- structure(
+  structure(
     data.frame(
       dirname          = dirname,
       filename         = filename,
       extension        = extension,
+      row.names        = row.names,
       stringsAsFactors = FALSE
     ), 
     class = c("decomposed_path", "data.frame")
   )
-  rownames(out) <- row.names
-  out
 }
 
 test_that(
@@ -279,7 +278,7 @@ test_that(
     )
     expect_warning(
       actual <- decompose_path(x), 
-      "Coercing .+ to class .{1,3}character.{1,3}\\."
+      "Coercing .+ to class [[:punct:]]character[[:punct:]]\\."
     )
     expect_equal(actual, expected)
   }
@@ -329,7 +328,7 @@ test_that(
     x <- factor(catz)
     expect_warning(
       actual <- decompose_path(x), 
-      "Coercing .+ to class .{1,3}character.{1,3}\\."
+      "Coercing .+ to class [[:punct:]]character[[:punct:]]\\."
     )
     expect_equal(actual, expected_catz)
   }
