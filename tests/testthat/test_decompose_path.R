@@ -23,8 +23,18 @@ test_that(
       extension = character(),
       row.names   = character()
     )
-    expect_equal(decompose_path(x), expected)
-    expect_equal(decompose_path(x2), expected)
+    actual <- decompose_path(x)
+    expect_s3_class(actual, "decomposed_path")
+    expect_equal(actual$dirname, expected$dirname)
+    expect_equal(actual$filename, expected$filename)
+    expect_equal(actual$extension, expected$extension)
+    expect_equal(rownames(actual), rownames(expected))
+    actual2 <- decompose_path(x2)
+    expect_s3_class(actual2, "decomposed_path")
+    expect_equal(actual2$dirname, expected$dirname)
+    expect_equal(actual2$filename, expected$filename)
+    expect_equal(actual2$extension, expected$extension)
+    expect_equal(rownames(actual2), rownames(expected))
   }
 )
 
@@ -32,14 +42,19 @@ test_that(
   "decompose_path handles paths with no directory and a single extension in the filename.",
   {
     x <- "foo.tgz"
-    pwd <- getwd()
+    pwd <- std_getwd()
     expected <- create_expected_decomposed_path(
       dirname          = pwd,
       filename         = "foo",
       extension        = "tgz",
       row.names        = x
     )
-    expect_equal(decompose_path(x), expected)
+    actual <- decompose_path(x)
+    expect_s3_class(actual, "decomposed_path")
+    expect_equal(actual$dirname, expected$dirname)
+    expect_equal(actual$filename, expected$filename)
+    expect_equal(actual$extension, expected$extension)
+    expect_equal(rownames(actual), rownames(expected))
   }
 )
 
@@ -47,14 +62,19 @@ test_that(
   "decompose_path handles paths with a directory and a single extension in the filename.",
   {
     x <- "somedir/foo.tgz"
-    pwd <- getwd()
+    pwd <- std_getwd()
     expected <- create_expected_decomposed_path(
       dirname          = file.path(pwd, "somedir"),
       filename         = "foo",
       extension        = "tgz",
       row.names        = x
     )
-    expect_equal(decompose_path(x), expected)
+    actual <- decompose_path(x)
+    expect_s3_class(actual, "decomposed_path")
+    expect_equal(actual$dirname, expected$dirname)
+    expect_equal(actual$filename, expected$filename)
+    expect_equal(actual$extension, expected$extension)
+    expect_equal(rownames(actual), rownames(expected))
   }
 )
 
@@ -62,14 +82,19 @@ test_that(
   "decompose_path handles paths with no directory and a double extension in the filename.",
   {
     x <- "foo.tar.gz"
-    pwd <- getwd()
+    pwd <- std_getwd()
     expected <- create_expected_decomposed_path(
       dirname          = pwd,
       filename         = "foo",
       extension        = "tar.gz",
       row.names        = x
     )
-    expect_equal(decompose_path(x), expected)
+    actual <- decompose_path(x)
+    expect_s3_class(actual, "decomposed_path")
+    expect_equal(actual$dirname, expected$dirname)
+    expect_equal(actual$filename, expected$filename)
+    expect_equal(actual$extension, expected$extension)
+    expect_equal(rownames(actual), rownames(expected))
   }
 )
 
@@ -77,14 +102,19 @@ test_that(
   "decompose_path handles paths with a directory and a double extension in the filename.",
   {
     x <- "somedir/foo.tar.gz"
-    pwd <- getwd()
+    pwd <- std_getwd()
     expected <- create_expected_decomposed_path(
       dirname          = file.path(pwd, "somedir"),
       filename         = "foo",
       extension        = "tar.gz",
       row.names        = x
     )
-    expect_equal(decompose_path(x), expected)
+    actual <- decompose_path(x)
+    expect_s3_class(actual, "decomposed_path")
+    expect_equal(actual$dirname, expected$dirname)
+    expect_equal(actual$filename, expected$filename)
+    expect_equal(actual$extension, expected$extension)
+    expect_equal(rownames(actual), rownames(expected))
   }
 )
 
@@ -93,14 +123,19 @@ test_that(
   "decompose_path handles paths with no directory and no extension in the filename.",
   {
     x <- "foo"
-    pwd <- getwd()
+    pwd <- std_getwd()
     expected <- create_expected_decomposed_path(
       dirname          = pwd,
       filename         = "foo",
       extension        = "",
       row.names        = x
     )
-    expect_equal(decompose_path(x), expected)
+    actual <- decompose_path(x)
+    expect_s3_class(actual, "decomposed_path")
+    expect_equal(actual$dirname, expected$dirname)
+    expect_equal(actual$filename, expected$filename)
+    expect_equal(actual$extension, expected$extension)
+    expect_equal(rownames(actual), rownames(expected))
   }
 )
 
@@ -108,14 +143,19 @@ test_that(
   "decompose_path handles paths with a directory and no extension in the filename.",
   {
     x <- "somedir/foo"
-    pwd <- getwd()
+    pwd <- std_getwd()
     expected <- create_expected_decomposed_path(
       dirname          = file.path(pwd, "somedir"),
       filename         = "foo",
       extension        = "",
       row.names        = x
     )
-    expect_equal(decompose_path(x), expected)
+    actual <- decompose_path(x)
+    expect_s3_class(actual, "decomposed_path")
+    expect_equal(actual$dirname, expected$dirname)
+    expect_equal(actual$filename, expected$filename)
+    expect_equal(actual$extension, expected$extension)
+    expect_equal(rownames(actual), rownames(expected))
   }
 )
 
@@ -123,14 +163,19 @@ test_that(
   "decompose_path handles filenames containing a '.' and an extension.",
   {
     x <- "foo. bar.zip"
-    pwd <- getwd()
+    pwd <- std_getwd()
     expected <- create_expected_decomposed_path(
       dirname          = pwd,
       filename         = "foo. bar",
       extension        = "zip",
       row.names        = x
     )
-    expect_equal(decompose_path(x), expected)
+    actual <- decompose_path(x)
+    expect_s3_class(actual, "decomposed_path")
+    expect_equal(actual$dirname, expected$dirname)
+    expect_equal(actual$filename, expected$filename)
+    expect_equal(actual$extension, expected$extension)
+    expect_equal(rownames(actual), rownames(expected))
   }
 )
 
@@ -138,14 +183,19 @@ test_that(
   "decompose_path handles backslashes in the directory name.",
   {
     x <- "somedir\\foo.tgz"
-    pwd <- getwd()
+    pwd <- std_getwd()
     expected <- create_expected_decomposed_path(
       dirname          = file.path(pwd, "somedir"),
       filename         = "foo",
       extension        = "tgz",
       row.names        = x
     )
-    expect_equal(decompose_path(x), expected)
+    actual <- decompose_path(x)
+    expect_s3_class(actual, "decomposed_path")
+    expect_equal(actual$dirname, expected$dirname)
+    expect_equal(actual$filename, expected$filename)
+    expect_equal(actual$extension, expected$extension)
+    expect_equal(rownames(actual), rownames(expected))
   }
 )
 
@@ -153,14 +203,19 @@ test_that(
   "decompose_path handles mixed forward and backslashes in the directory name.",
   {
     x <- "somedir\\another dir/foo.tgz"
-    pwd <- getwd()
+    pwd <- std_getwd()
     expected <- create_expected_decomposed_path(
       dirname          = file.path(pwd, "somedir", "another dir"),
       filename         = "foo",
       extension        = "tgz",
       row.names        = x
     )
-    expect_equal(decompose_path(x), expected)
+    actual <- decompose_path(x)
+    expect_s3_class(actual, "decomposed_path")
+    expect_equal(actual$dirname, expected$dirname)
+    expect_equal(actual$filename, expected$filename)
+    expect_equal(actual$extension, expected$extension)
+    expect_equal(rownames(actual), rownames(expected))
   }
 )
 
@@ -168,13 +223,20 @@ test_that(
   "decompose_path handles absolute paths to directories.",
   {
     x <- R.home()
+    expected_dir <- normalizePath(R.home(), "/", mustWork = FALSE)
+    substring(expected_dir, 1, 1) <- toupper(substring(expected_dir, 1, 1))
     expected <- create_expected_decomposed_path(
-      dirname          = normalizePath(R.home(), "/", mustWork = FALSE),
+      dirname          = expected_dir,
       filename         = "",
       extension        = "",
       row.names        = x
     )
-    expect_equal(decompose_path(x), expected)
+    actual <- decompose_path(x)
+    expect_s3_class(actual, "decomposed_path")
+    expect_equal(actual$dirname, expected$dirname)
+    expect_equal(actual$filename, expected$filename)
+    expect_equal(actual$extension, expected$extension)
+    expect_equal(rownames(actual), rownames(expected))
   }
 )
 
@@ -182,14 +244,19 @@ test_that(
   "decompose_path handles '~'.",
   {
     x <- "~"
-    pwd <- getwd()
+    pwd <- std_getwd()
     expected <- create_expected_decomposed_path(
       dirname          = normalizePath("~", "/", mustWork = FALSE),
       filename         = "",
       extension        = "",
       row.names        = x
     )
-    expect_equal(decompose_path(x), expected)
+    actual <- decompose_path(x)
+    expect_s3_class(actual, "decomposed_path")
+    expect_equal(actual$dirname, expected$dirname)
+    expect_equal(actual$filename, expected$filename)
+    expect_equal(actual$extension, expected$extension)
+    expect_equal(rownames(actual), rownames(expected))
   }
 )
 
@@ -203,7 +270,12 @@ test_that(
       extension        = "tgz",
       row.names        = x
     )
-    expect_equal(decompose_path(x), expected)
+    actual <- decompose_path(x)
+    expect_s3_class(actual, "decomposed_path")
+    expect_equal(actual$dirname, expected$dirname)
+    expect_equal(actual$filename, expected$filename)
+    expect_equal(actual$extension, expected$extension)
+    expect_equal(rownames(actual), rownames(expected))
   }
 )
 
@@ -211,14 +283,19 @@ test_that(
   "decompose_path handles the current directory as '.'.",
   {
     x <- "."
-    pwd <- getwd()
+    pwd <- std_getwd()
     expected <- create_expected_decomposed_path(
       dirname          = pwd,
       filename         = "",
       extension        = "",
       row.names        = x
     )
-    expect_equal(decompose_path(x), expected)
+    actual <- decompose_path(x)
+    expect_s3_class(actual, "decomposed_path")
+    expect_equal(actual$dirname, expected$dirname)
+    expect_equal(actual$filename, expected$filename)
+    expect_equal(actual$extension, expected$extension)
+    expect_equal(rownames(actual), rownames(expected))
   }
 )
 
@@ -226,14 +303,19 @@ test_that(
   "decompose_path handles the parent directory as '..'.",
   {
     x <- ".."
-    pwd <- getwd()
+    pwd <- std_getwd()
     expected <- create_expected_decomposed_path(
       dirname          = dirname(pwd),
       filename         = "",
       extension        = "",
       row.names        = x
     )
-    expect_equal(decompose_path(x), expected)
+    actual <- decompose_path(x)
+    expect_s3_class(actual, "decomposed_path")
+    expect_equal(actual$dirname, expected$dirname)
+    expect_equal(actual$filename, expected$filename)
+    expect_equal(actual$extension, expected$extension)
+    expect_equal(rownames(actual), rownames(expected))
   }
 )
 
@@ -241,14 +323,19 @@ test_that(
   "decompose_path handles files inside '.'.",
   {
     x <- "./foo.tgz"
-    pwd <- getwd()
+    pwd <- std_getwd()
     expected <- create_expected_decomposed_path(
       dirname          = pwd,
       filename         = "foo",
       extension        = "tgz",
       row.names        = x
     )
-    expect_equal(decompose_path(x), expected)
+    actual <- decompose_path(x)
+    expect_s3_class(actual, "decomposed_path")
+    expect_equal(actual$dirname, expected$dirname)
+    expect_equal(actual$filename, expected$filename)
+    expect_equal(actual$extension, expected$extension)
+    expect_equal(rownames(actual), rownames(expected))
   }
 )
 
@@ -262,7 +349,12 @@ test_that(
       extension        = "",
       row.names        = x
     )
-    expect_equal(decompose_path(x), expected)
+    actual <- decompose_path(x)
+    expect_s3_class(actual, "decomposed_path")
+    expect_equal(actual$dirname, expected$dirname)
+    expect_equal(actual$filename, expected$filename)
+    expect_equal(actual$extension, expected$extension)
+    expect_equal(rownames(actual), rownames(expected))
   }
 )
 
@@ -278,9 +370,14 @@ test_that(
     )
     expect_warning(
       actual <- decompose_path(x), 
-      "Coercing .+ to class [[:punct:]]character[[:punct:]]\\."
+      "Coercing .+ to class .character.\\."
     )
-    expect_equal(actual, expected)
+    actual <- decompose_path(x)
+    expect_s3_class(actual, "decomposed_path")
+    expect_equal(actual$dirname, expected$dirname)
+    expect_equal(actual$filename, expected$filename)
+    expect_equal(actual$extension, expected$extension)
+    expect_equal(rownames(actual), rownames(expected))
   }
 )
 
@@ -294,13 +391,14 @@ catz <- c(
   "kitties\\hipster kitty.pdf"
 )
 
-pwd <- getwd()
+pwd <- std_getwd()
 expected_catz <- create_expected_decomposed_path(
   dirname   = c(
     file.path(pwd, "catz"),
     file.path(pwd, "moar cats"),
     file.path(pwd, "catz/catz in loft"),
-    file.path(pwd, "catz/musical catz"), getwd(),
+    file.path(pwd, "catz/musical catz"), 
+    pwd,
     file.path(pwd, "kitties"),
     file.path(pwd, "kitties")
   ),
@@ -318,7 +416,12 @@ test_that(
   "decompose_path works with a character vector input.",
   {
     x <- catz
-    expect_equal(decompose_path(x), expected_catz)
+    actual <- decompose_path(x)
+    expect_s3_class(actual, "decomposed_path")
+    expect_equal(actual$dirname, expected_catz$dirname)
+    expect_equal(actual$filename, expected_catz$filename)
+    expect_equal(actual$extension, expected_catz$extension)
+    expect_equal(rownames(actual), rownames(expected_catz))
   }
 )
 
@@ -328,8 +431,70 @@ test_that(
     x <- factor(catz)
     expect_warning(
       actual <- decompose_path(x), 
-      "Coercing .+ to class [[:punct:]]character[[:punct:]]\\."
+      "Coercing .+ to class .character.\\."
     )
-    expect_equal(actual, expected_catz)
+    expect_s3_class(actual, "decomposed_path")
+    expect_equal(actual$dirname, expected_catz$dirname)
+    expect_equal(actual$filename, expected_catz$filename)
+    expect_equal(actual$extension, expected_catz$extension)
+    expect_equal(rownames(actual), rownames(expected_catz))
+  }
+)
+
+test_that(
+  "decompose_path handles paths with a unicode directory name.",
+  {
+    x <- "\u0108\u0158\u0104\u0143/foo.tgz"
+    pwd <- std_getwd()
+    expected <- create_expected_decomposed_path(
+      dirname          = file.path(pwd, "\u0108\u0158\u0104\u0143"),
+      filename         = "foo",
+      extension        = "tgz",
+      row.names        = x
+    )
+    actual <- decompose_path(x)
+    expect_s3_class(actual, "decomposed_path")
+    expect_equal(actual$dirname, expected$dirname)
+    expect_equal(actual$filename, expected$filename)
+    expect_equal(actual$extension, expected$extension)
+    expect_equal(rownames(actual), rownames(expected))
+  }
+)
+
+test_that(
+  "decompose_path handles UNC paths with forward slashes.",
+  {
+    x <- "//foo/bar"
+    expected <- create_expected_decomposed_path(
+      dirname          = if(is_windows()) "\\\\foo" else "/foo",
+      filename         = "bar",
+      extension        = "",
+      row.names        = x
+    )
+    actual <- decompose_path(x)
+    expect_s3_class(actual, "decomposed_path")
+    expect_equal(actual$dirname, expected$dirname)
+    expect_equal(actual$filename, expected$filename)
+    expect_equal(actual$extension, expected$extension)
+    expect_equal(rownames(actual), rownames(expected))
+  }
+)
+
+test_that(
+  "decompose_path handles UNC paths with backslashes.",
+  {
+    x <- "\\\\foo/bar"
+    expected <- create_expected_decomposed_path(
+      dirname          = "\\\\foo",
+      filename         = "bar",
+      extension        = "",
+      row.names        = x
+    )
+    actual <- decompose_path(x)
+    expect_s3_class(actual, "decomposed_path")
+    expect_equal(actual$dirname, expected$dirname)
+    expect_equal(actual$filename, expected$filename)
+    expect_equal(actual$extension, expected$extension)
+    expect_equal(rownames(actual), rownames(expected))
   }
 )

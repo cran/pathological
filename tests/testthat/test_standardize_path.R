@@ -35,7 +35,7 @@ test_that(
   "standardize_path works with relative paths with forward slashes.",
   {
     x <- "somedir/foo.tgz"
-    pwd <- getwd()
+    pwd <- std_getwd()
     expected <- setNames(
       file.path(pwd, "somedir", "foo.tgz", fsep = "/"),
       x
@@ -48,7 +48,7 @@ test_that(
   "standardize_path works with relative paths with back slashes.",
   {
     x <- "somedir\\foo.tgz"
-    pwd <- getwd()
+    pwd <- std_getwd()
     expected <- setNames(
       file.path(pwd, "somedir", "foo.tgz", fsep = "/"),
       x
@@ -61,7 +61,7 @@ test_that(
   "standardize_path works with relative paths with mixed forward and back slashes.",
   {
     x <- "somedir/another dir\\foo.tgz"
-    pwd <- getwd()
+    pwd <- std_getwd()
     expected <- setNames(
       file.path(pwd, "somedir", "another dir", "foo.tgz", fsep = "/"),
       x
@@ -74,7 +74,7 @@ test_that(
   "standardize_path works with absolute Windows paths with forward slashes.",
   {
     x <- "c:/foo/bar"
-    expected <- setNames("c:/foo/bar", x)
+    expected <- setNames("C:/foo/bar", x)
     expect_equal(standardize_path(x), expected)
   }
 )
@@ -83,7 +83,7 @@ test_that(
   "standardize_path works with absolute Windows paths with back slashes.",
   {
     x <- "c:\\foo\\bar"
-    expected <- setNames("c:/foo/bar", x)
+    expected <- setNames("C:/foo/bar", x)
     expect_equal(standardize_path(x), expected)
   }
 )
@@ -92,7 +92,7 @@ test_that(
   "standardize_path works with absolute Windows paths with mixed forward and back slashes.",
   {
     x <- "c:/foo\\bar"
-    expected <- setNames("c:/foo/bar", x)
+    expected <- setNames("C:/foo/bar", x)
     expect_equal(standardize_path(x), expected)
   }
 )
@@ -101,7 +101,15 @@ test_that(
   "standardize_path works with absolute UNC paths with forward slashes.",
   {
     x <- "//foo/bar"
-    expected <- setNames("//foo/bar", x)
+    expected <- if(assertive.reflection::is_windows())
+    {
+      # under windows this is a UNC path
+      setNames("\\\\foo/bar", x)
+    } else 
+    {
+      # under unix, this is an absolute path
+      setNames("/foo/bar", x)
+    }
     expect_equal(standardize_path(x), expected)
   }
 )
@@ -110,7 +118,68 @@ test_that(
   "standardize_path works with absolute UNC paths with back slashes.",
   {
     x <- "\\\\foo\\bar"
-    expected <- setNames("//foo/bar", x)
+    expected <- setNames("\\\\foo/bar", x)
+    expect_equal(standardize_path(x), expected)
+  }
+)
+
+test_that(
+  "standardize_path works with Windows drive name with trailing slash.",
+  {
+    x <- "c:/"
+    expected <- setNames("C:/", x)
+    expect_equal(standardize_path(x), expected)
+  }
+)
+
+test_that(
+  "standardize_path works with Windows drive name with trailing backslash.",
+  {
+    x <- "c:\\"
+    expected <- setNames("C:/", x)
+    expect_equal(standardize_path(x), expected)
+  }
+)
+
+test_that(
+  "standardize_path works with Windows drive name no trailing slash.",
+  {
+    x <- "c:"
+    expected <- setNames("C:/", x)
+    expect_equal(standardize_path(x), expected)
+  }
+)
+
+test_that(
+  "standardize_path works with /.",
+  {
+    x <- "/"
+    expected <- if(assertive.reflection::is_windows())
+    {
+      # under windows this is the current drive
+      setNames(toupper(normalizePath("/", "/")), x)
+    } else 
+    {
+      # under unix, this is root
+      setNames("/", x)
+    }
+    expect_equal(standardize_path(x), expected)
+  }
+)
+
+test_that(
+  "standardize_path works with \\.",
+  {
+    x <- "\\"
+    expected <- if(assertive.reflection::is_windows())
+    {
+      # under windows this is the current drive
+      setNames(toupper(normalizePath("/", "/")), x)
+    } else 
+    {
+      # under unix, this is root
+      setNames("/", x)
+    }
     expect_equal(standardize_path(x), expected)
   }
 )
