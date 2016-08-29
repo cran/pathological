@@ -41,6 +41,7 @@ test_that(
 test_that(
   "decompose_path handles paths with no directory and a single extension in the filename.",
   {
+    skip_on_cran()
     x <- "foo.tgz"
     pwd <- std_getwd()
     expected <- create_expected_decomposed_path(
@@ -81,6 +82,7 @@ test_that(
 test_that(
   "decompose_path handles paths with no directory and a double extension in the filename.",
   {
+    skip_on_cran()
     x <- "foo.tar.gz"
     pwd <- std_getwd()
     expected <- create_expected_decomposed_path(
@@ -122,6 +124,7 @@ test_that(
 test_that(
   "decompose_path handles paths with no directory and no extension in the filename.",
   {
+    skip_on_cran()
     x <- "foo"
     pwd <- std_getwd()
     expected <- create_expected_decomposed_path(
@@ -162,6 +165,7 @@ test_that(
 test_that(
   "decompose_path handles filenames containing a '.' and an extension.",
   {
+    skip_on_cran()
     x <- "foo. bar.zip"
     pwd <- std_getwd()
     expected <- create_expected_decomposed_path(
@@ -282,6 +286,7 @@ test_that(
 test_that(
   "decompose_path handles the current directory as '.'.",
   {
+    skip_on_cran()
     x <- "."
     pwd <- std_getwd()
     expected <- create_expected_decomposed_path(
@@ -302,6 +307,7 @@ test_that(
 test_that(
   "decompose_path handles the parent directory as '..'.",
   {
+    skip_on_cran()
     x <- ".."
     pwd <- std_getwd()
     expected <- create_expected_decomposed_path(
@@ -322,6 +328,7 @@ test_that(
 test_that(
   "decompose_path handles files inside '.'.",
   {
+    skip_on_cran()
     x <- "./foo.tgz"
     pwd <- std_getwd()
     expected <- create_expected_decomposed_path(
@@ -415,6 +422,7 @@ expected_catz <- create_expected_decomposed_path(
 test_that(
   "decompose_path works with a character vector input.",
   {
+    skip_on_cran()
     x <- catz
     actual <- decompose_path(x)
     expect_s3_class(actual, "decomposed_path")
@@ -428,6 +436,7 @@ test_that(
 test_that(
   "decompose_path works with a factor input.",
   {
+    skip_on_cran()
     x <- factor(catz)
     expect_warning(
       actual <- decompose_path(x), 
@@ -498,3 +507,30 @@ test_that(
     expect_equal(rownames(actual), rownames(expected))
   }
 )
+
+
+test_that(
+  "decompose_path works with NTFS Junctions",
+  {
+    skip_if_not(assertive.reflection::is_windows())
+    skip_on_cran()
+    source_dir <- tempfile("source")
+    target_dir <- tempfile("target")
+    create_dirs(target_dir)
+    create_ntfs_junction(source_dir, target_dir)
+    x <- c(source_dir, file.path(source_dir, "foo.bar"))
+    actual <- decompose_path(x)
+    expected <- create_expected_decomposed_path(
+      dirname          = rep.int(standardize_path(source_dir), 2),
+      filename         = c("", "foo"),
+      extension        = c("", "bar"),
+      row.names        = x
+    )
+    expect_s3_class(actual, "decomposed_path")
+    expect_equal(actual$dirname, expected$dirname)
+    expect_equal(actual$filename, expected$filename)
+    expect_equal(actual$extension, expected$extension)
+    expect_equal(rownames(actual), rownames(expected))
+  }
+)
+
