@@ -1,3 +1,4 @@
+0.1-1 Some problematic tests marked as skip_on_cran().
 0.1-0 Added split_dir (dir + split_path).
       Added a vignette.
       parent_dir gets a default argument.

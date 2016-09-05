@@ -1,8 +1,8 @@
 Package: pathological
 Type: Package
 Title: Path Manipulation Utilities
-Version: 0.1-0
-Date: 2016-08-29
+Version: 0.1-1
+Date: 2016-09-05
 Author: Richard Cotton [aut, cre], Janko Thyson [ctb]
 Maintainer: Richard Cotton <richierocks@gmail.com>
 Authors@R: c(person("Richard", "Cotton", role = c("aut", "cre"),
@@ -25,6 +25,6 @@ Acknowledgments: Development of this package was partially funded by
 RoxygenNote: 5.0.1
 VignetteBuilder: knitr
 NeedsCompilation: no
-Packaged: 2016-08-29 17:44:03 UTC; richie
+Packaged: 2016-09-05 08:11:14 UTC; rjc2003
 Repository: CRAN
-Date/Publication: 2016-08-29 20:29:19
+Date/Publication: 2016-09-05 15:54:56

@@ -11,7 +11,7 @@
 
 <meta name="author" content="Richard Cotton" />
 
-<meta name="date" content="2016-08-29" />
+<meta name="date" content="2016-09-05" />
 
 <title>Introduction</title>
 
@@ -118,7 +118,7 @@ $(document).ready(function () {
 
 <h1 class="title toc-ignore">Introduction</h1>
 <h4 class="author"><em>Richard Cotton</em></h4>
-<h4 class="date"><em>2016-08-29</em></h4>
+<h4 class="date"><em>2016-09-05</em></h4>
 
 </div>
 
@@ -131,20 +131,20 @@ $(document).ready(function () {
 <h2>Convenient Wrappers for Base-R Functions</h2>
 <p>There are lots of functions in base-R for working with files and directories. Unfortunately, some of them are a little bit annoying to work with. For example, the function names, and the form in which paths are returned, are inconsistent. For example</p>
 <pre class="r"><code>tempdir()</code></pre>
-<pre><code>## [1] &quot;C:\\Users\\richie\\AppData\\Local\\Temp\\RtmpYL9zWa&quot;</code></pre>
+<pre><code>## [1] &quot;C:\\Users\\rjc2003\\AppData\\Local\\Temp\\RtmpGee7V8&quot;</code></pre>
 <pre class="r"><code>R.home()</code></pre>
-<pre><code>## [1] &quot;d:/PROGRA~1/R/R-33~1.1&quot;</code></pre>
+<pre><code>## [1] &quot;C:/PROGRA~1/R/R-devel&quot;</code></pre>
 <p><em>pathological</em> contains standardized wrappers to these functions. These return absolute, unabbreviated paths. You can choose whether you want back or forward slashes to separate directory levels.</p>
 <pre class="r"><code>library(pathological)
 temp_dir()</code></pre>
-<pre><code>## [1] &quot;C:/Users/richie/AppData/Local/Temp/RtmpYL9zWa&quot;</code></pre>
+<pre><code>## [1] &quot;C:/Users/rjc2003/AppData/Local/Temp/RtmpGee7V8&quot;</code></pre>
 <pre class="r"><code>r_home()</code></pre>
-<pre><code>## [1] &quot;D:/Program Files/R/R-3.3.1&quot;</code></pre>
+<pre><code>## [1] &quot;C:/Program Files/R/R-devel&quot;</code></pre>
 <p>These wrappers are also vectorized.</p>
 <pre class="r"><code>r_home(c(&quot;home&quot;, &quot;bin&quot;, &quot;share&quot;), c(&quot;&quot;, &quot;i386&quot;, &quot;zoneinfo&quot;))</code></pre>
-<pre><code>## [1] &quot;D:/Program Files/R/R-3.3.1&quot;               
-## [2] &quot;D:/PROGRA~1/R/R-33~1.1/bin/x64/i386&quot;      
-## [3] &quot;D:/Program Files/R/R-3.3.1/share/zoneinfo&quot;</code></pre>
+<pre><code>## [1] &quot;C:/Program Files/R/R-devel&quot;               
+## [2] &quot;C:/PROGRA~1/R/R-devel/bin/x64/i386&quot;       
+## [3] &quot;C:/Program Files/R/R-devel/share/zoneinfo&quot;</code></pre>
 <p>There are several wrapper functions available in <em>pathological</em>.</p>
 <table>
 <thead>
@@ -210,10 +210,10 @@ withr::with_dir(
   temp_dir(),
   decompose_path(x)
 )</code></pre>
-<pre><code>##                                                  dirname filename
-## foo.tgz    C:/Users/richie/AppData/Local/Temp/RtmpYL9zWa      foo
-## bar.tar.gz C:/Users/richie/AppData/Local/Temp/RtmpYL9zWa      bar
-## baz        C:/Users/richie/AppData/Local/Temp/RtmpYL9zWa      baz
+<pre><code>##                                                   dirname filename
+## foo.tgz    C:/Users/rjc2003/AppData/Local/Temp/RtmpGee7V8      foo
+## bar.tar.gz C:/Users/rjc2003/AppData/Local/Temp/RtmpGee7V8      bar
+## baz        C:/Users/rjc2003/AppData/Local/Temp/RtmpGee7V8      baz
 ##            extension
 ## foo.tgz          tgz
 ## bar.tar.gz    tar.gz
@@ -227,11 +227,11 @@ withr::with_dir(
 </ul>
 <p><code>split_path</code> splits file paths into directory components, returning a list of character vectors, or a matrix.</p>
 <pre class="r"><code>split_path(r_home())</code></pre>
-<pre><code>## $`D:/Program Files/R/R-3.3.1`
-## [1] &quot;D:&quot;            &quot;Program Files&quot; &quot;R&quot;             &quot;R-3.3.1&quot;</code></pre>
+<pre><code>## $`C:/Program Files/R/R-devel`
+## [1] &quot;C:&quot;            &quot;Program Files&quot; &quot;R&quot;             &quot;R-devel&quot;</code></pre>
 <pre class="r"><code>split_path(r_home(), simplify = TRUE)</code></pre>
 <pre><code>##                            [,1] [,2]            [,3] [,4]     
-## D:/Program Files/R/R-3.3.1 &quot;D:&quot; &quot;Program Files&quot; &quot;R&quot;  &quot;R-3.3.1&quot;</code></pre>
+## C:/Program Files/R/R-devel &quot;C:&quot; &quot;Program Files&quot; &quot;R&quot;  &quot;R-devel&quot;</code></pre>
 <p><code>split_dir</code> is a shortcut for <code>dir</code> + <code>split_path</code>, with defaults to make it easy to <code>View</code> the contents of a directory structure.</p>
 <pre class="r"><code>split_dir(r_home())</code></pre>
 <div class="figure">
@@ -243,9 +243,9 @@ withr::with_dir(
 <h2>Startup files</h2>
 <p>On startup, you can customize R’s behaviour by running an R Profile script, or setting environment variables in an R Environ script. the <code>?Startup</code> help page details the convoluted process of how it determines which files to run. To save worrying about the details, <em>pathological</em> has some functions that return the paths to these files. <code>r_profile_site</code> returns the path to the site-level R Profile file. <code>r_profile</code> returns the user-level file. If a suitable file cannot be found, <code>NA</code> is returned.</p>
 <pre class="r"><code>r_profile_site()</code></pre>
-<pre><code>## [1] &quot;D:/Program Files/R/R-3.3.1/etc/Rprofile.site&quot;</code></pre>
+<pre><code>## [1] &quot;C:/Program Files/R/R-devel/etc/Rprofile.site&quot;</code></pre>
 <pre class="r"><code>r_profile()</code></pre>
-<pre><code>## [1] &quot;C:/Users/richie/AppData/Local/Temp/RtmpiW4hts/Rprofile-devtools&quot;</code></pre>
+<pre><code>## [1] &quot;C:/Users/rjc2003/AppData/Local/Temp/RtmpQpfDaz/Rprofile-devtools&quot;</code></pre>
 <p><code>r_environ_site</code> and <code>r_environ</code> are the equivalent functions for site and user-level R Environ files, respectively.</p>
 </div>
 <div id="windows-specific-functionality" class="section level2">
