@@ -4,6 +4,7 @@
 \name{pathological}
 \alias{pathological}
 \alias{pathological-package}
+\alias{pathological-package}
 \title{pathological: utilities for paths, files and directories.}
 \description{
 This package contains utilities for manipulating paths, files and 
@@ -22,4 +23,3 @@ of the filename. \code{recompose_path} takes the result of
 Richie Cotton
 }
 \keyword{package}
-

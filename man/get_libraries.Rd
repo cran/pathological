@@ -24,9 +24,8 @@ get_libraries()
 get_libraries(1)
 }
 \references{
-\url{http://cran.r-project.org/doc/FAQ/R-FAQ.html#What-is-the-difference-between-package-and-library_003f}
+\url{https://cran.r-project.org/doc/FAQ/R-FAQ.html#What-is-the-difference-between-package-and-library_003f}
 }
 \seealso{
 \code{\link[base]{.libPaths}}
 }
-

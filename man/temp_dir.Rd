@@ -37,4 +37,3 @@ temp_file(c("foo", "bar/baz"), fileext = c(".txt", ".R"))
 \seealso{
 \code{\link[base]{tempdir}}
 }
-

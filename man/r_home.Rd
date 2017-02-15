@@ -34,4 +34,3 @@ r_home(c("home", "bin", "share"), c("", "i386", "zoneinfo"))
 \seealso{
 \code{\link[base]{R.home}}
 }
-

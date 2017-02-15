@@ -20,6 +20,11 @@ wrapper_data <- data.frame(
   pathological = c("choose_files", "choose_dir", "copy_dir", "create_dirs", "create_files", "get_libraries", "r_home", "sys_which", "system_file", "temp_dir", "temp_file"),
   stringsAsFactors = FALSE
 )
+wrapper_data$pathological <- paste0(
+  "[", wrapper_data$pathological,
+  "](https://www.rdocumentation.org/packages/pathlogical/topics/", 
+  wrapper_data$pathological, ")"
+)
 knitr::kable(wrapper_data)
 
 ## ---- decompose_path-----------------------------------------------------

@@ -37,12 +37,19 @@
 #' @importFrom stringi stri_replace_first_regex
 #' @importFrom stringi stri_replace_all_fixed
 #' @importFrom stringi stri_detect_regex
+#' @importFrom stringi stri_replace_all_regex
 #' @export
 standardize_path <- function(x = dir(), sep = c("/", "\\"), include_names = TRUE)
 {
   if(is_empty(x))
   {
-    return(setNames(character(), character()))
+    if(include_names)
+    {
+      return(setNames(character(), character()))
+    } else
+    {
+      return(character())
+    }
   }
   sep <- match.arg(sep)
   x <- original_x <- coerce_to(x, "character")
@@ -91,7 +98,7 @@ standardize_path <- function(x = dir(), sep = c("/", "\\"), include_names = TRUE
   if(is_unix())
   {
     is_absolute <- stri_detect_regex(x[ok], "^([/\\\\]|[a-zA-Z]:)")
-    x[ok][!is_absolute] <- file.path(getwd(), x[ok], fsep = "/")
+    x[ok][!is_absolute] <- file.path(getwd(), x[ok][!is_absolute], fsep = "/")
   }
   
   # Strip trailing slashes, except if it's a root dir
@@ -110,6 +117,12 @@ standardize_path <- function(x = dir(), sep = c("/", "\\"), include_names = TRUE
   # Make this consistently happen.
   # At this point, the path should always start with a letter or a slash
   x[ok] <- paste0(toupper(substring(x[ok], 1, 1)), substring(x[ok], 2))
+  
+  # Missing files preceded by "./" can still have this. Remove it now
+  x <- stri_replace_all_fixed(x, "/./", "/")
+  
+  # Similarly, "../" should be removed along with the previous dir
+  x <- stri_replace_all_regex(x, "/[^/]+/\\.\\./", "/")
   
   # Replace / with the chosen slash
   if(sep == "\\")

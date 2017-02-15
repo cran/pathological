@@ -66,6 +66,7 @@ have not been reproduced elsewhere.  If you have unexpected behaviour with
 this function, please report it on the package issue tracker.
 \url{https://github.com/richierocks/pathological/issues}
 }
+
 \examples{
 x <- c(
   "somedir/foo.tgz",         # single extension
@@ -90,4 +91,3 @@ recompose_path(decomposed)
 \code{\link[tools]{file_ext}}, a primitive version of 
 \code{get_extension}
 }
-

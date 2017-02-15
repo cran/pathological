@@ -48,4 +48,3 @@ remove_dirs(temp_dir(c("foo", "bar", "blah")))
 \seealso{
 \code{\link[base]{dir.create}}, \code{\link[base]{unlink}}
 }
-

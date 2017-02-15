@@ -7,7 +7,7 @@
 #' @param sep String separator between directory levels in the output.
 #' @return A character vector of paths to libraries.
 #' @seealso \code{\link[base]{.libPaths}}
-#' @references \url{http://cran.r-project.org/doc/FAQ/R-FAQ.html#What-is-the-difference-between-package-and-library_003f}
+#' @references \url{https://cran.r-project.org/doc/FAQ/R-FAQ.html#What-is-the-difference-between-package-and-library_003f}
 #' @examples
 #' get_libraries()
 #' get_libraries(1)

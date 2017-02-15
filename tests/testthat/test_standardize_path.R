@@ -183,3 +183,18 @@ test_that(
     expect_equal(standardize_path(x), expected)
   }
 )
+
+test_that(
+  "standardize_path works with missing files with ./ prefix",
+  {
+    a_real_file <- dir()[1]
+    a_pretend_file <- "missing.file"
+    x <- paste0("./", c(a_real_file, a_pretend_file))
+    pwd <- std_getwd()
+    expected <- setNames(
+      file.path(pwd, c(a_real_file, a_pretend_file), fsep = "/"),
+      x
+    )
+    expect_equal(standardize_path(x), expected)
+  }
+)
